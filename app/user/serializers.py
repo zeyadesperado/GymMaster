@@ -1,7 +1,6 @@
 """
 Serializers for the user API view.
 """
-from site import getusersitepackages
 from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
