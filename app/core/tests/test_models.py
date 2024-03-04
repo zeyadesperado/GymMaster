@@ -2,7 +2,6 @@
 Tests for models.
 """
 from decimal import Decimal
-from pydoc import describe
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
