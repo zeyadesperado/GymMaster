@@ -55,7 +55,7 @@ class TagViewSet(mixins.UpdateModelMixin,
         return self.queryset.filter(user=self.request.user).order_by('-name')
 
 
-class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class IngredientViewSet(mixins.UpdateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     """Manage Ingredients in the database"""
     serializer_class = serializers.IngredientSerializer
     queryset = Ingredient.objects.all()
