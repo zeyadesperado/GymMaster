@@ -2,7 +2,6 @@
 Tests for the Recipe APIs.
 """
 from decimal import Decimal
-from os import name
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -11,7 +10,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Recipe,Tag
+from core.models import Recipe, Tag
 
 from recipe.serializers import (
     RecipeSerializer,
@@ -207,7 +206,7 @@ class PrivateRecipeAPITest(TestCase):
             "title": "Thai",
             "time_minutes": 5,
             "price": Decimal("3.50"),
-            "tags": [{ "name": 'Thai', },{"name": 'Dinner',}]
+            "tags": [{"name": 'Thai', }, {"name": 'Dinner', }]
             }
         res = self.client.post(RECIPES_URL, payload, format='json')
 
@@ -230,7 +229,7 @@ class PrivateRecipeAPITest(TestCase):
             "title": "Pongal",
             "time_minutes": 15,
             "price": Decimal("8.60"),
-            'tags': [{"name": 'Indian'},{"name": 'Breakfast'}],
+            'tags': [{"name": 'Indian'}, {"name": 'Breakfast'}],
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
 
@@ -247,4 +246,3 @@ class PrivateRecipeAPITest(TestCase):
                 user=self.user,
             ).exists()
             self.assertTrue(exists)
-

@@ -1,7 +1,6 @@
 """
 serializers for recipe APIs
 """
-from urllib import request
 from rest_framework import serializers
 
 from core.models import Recipe, Tag
@@ -22,7 +21,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'time_minutes', 'price', 'link','tags']
+        fields = ['id', 'title', 'time_minutes', 'price', 'link', 'tags']
         read_only_fields = ['id']
 
     def create(self, validated_data):
@@ -32,7 +31,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         auth_user = self.context["request"].user
         for tag in tags:
             tag_obj, created = Tag.objects.get_or_create(
-                user = auth_user,
+                user=auth_user,
                 **tag,
             )
             recipe.tags.add(tag_obj)
