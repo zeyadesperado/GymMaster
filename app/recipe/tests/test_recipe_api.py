@@ -2,7 +2,6 @@
 Tests for the Recipe APIs.
 """
 from decimal import Decimal
-from os import name
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -308,20 +307,19 @@ class PrivateRecipeAPITest(TestCase):
         self.assertEqual(recipe.ingredients.count(), 2)
         for ingredient in payload['ingredients']:
             exists = recipe.ingredients.filter(
-                name = ingredient['name'],
-                user = self.user,
+                name=ingredient['name'],
+                user=self.user,
             ).exists()
-
-        self.assertTrue(exists)
+            self.assertTrue(exists)
 
     def test_create_recipe_with_existing_ingredient(self):
         """Test Creating a recipe with existing ingredients."""
-        ingredient = Ingredient.objects.create(name='Lemon', user=self.user)
+        ingredient = Ingredient.objects.create(user=self.user, name='Lemon')
         payload = {
             'title': 'Vietnames Soup',
             'time_minutes': 25,
             'price': '2.25',
-            'Ingredients': [{'name': 'Lemon'}, {'name': 'fish sause'}],
+            'ingredients': [{'name': 'Lemon'}, {'name': 'fish sause'}],
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
 
@@ -331,8 +329,9 @@ class PrivateRecipeAPITest(TestCase):
         recipe = recipes[0]
         self.assertEqual(recipe.ingredients.count(), 2)
         self.assertIn(ingredient, recipe.ingredients.all())
-        for ingredient in payload['Ingredients']:
+        for ingredient in payload['ingredients']:
             exists = recipe.ingredients.filter(
-                name = ingredient['name'],
-                user = self.user,
-            )
+                name=ingredient['name'],
+                user=self.user,
+            ).exists()
+            self.assertTrue(exists)
