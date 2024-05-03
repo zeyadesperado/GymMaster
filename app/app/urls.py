@@ -20,7 +20,7 @@ urlpatterns = [
     path('api/recipe/', include('recipe.urls')),
 ]
 
-#if dev server and not prod :
+# if dev server and not prod :
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,
