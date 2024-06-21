@@ -39,9 +39,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    age = models.PositiveIntegerField(blank=True, null=True)
+    weight = models.FloatField(null=True, blank=True)
+    height = models.FloatField(null=True, blank=True)
+    phone = models.CharField(max_length=15, null=True, blank=True)
 
     objects = UserManager()
-
     USERNAME_FIELD = 'email'
 
 
@@ -53,7 +56,8 @@ class Recipe(models.Model):
     )
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    time_minutes = models.IntegerField()
+    time_minutes = models.IntegerField(null=True, blank=True)
+    calories = models.PositiveIntegerField(null=True, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     link = models.CharField(max_length=255, blank=True)
     tags = models.ManyToManyField('Tag')
