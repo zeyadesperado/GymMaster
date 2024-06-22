@@ -39,13 +39,57 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    
+    # Basic attributes
     age = models.PositiveIntegerField(blank=True, null=True)
     weight = models.FloatField(null=True, blank=True)
     height = models.FloatField(null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
-
+    
+    # Additional body composition attributes
+    body_fat_percentage = models.FloatField(null=True, blank=True)
+    muscle_mass = models.FloatField(null=True, blank=True)
+    bone_density = models.FloatField(null=True, blank=True)
+    waist_circumference = models.FloatField(null=True, blank=True)
+    hip_circumference = models.FloatField(null=True, blank=True)
+    
+    # BMI interpretation choices
+    UNDERWEIGHT = 'Underweight'
+    NORMAL_WEIGHT = 'Normal weight'
+    OVERWEIGHT = 'Overweight'
+    OBESITY = 'Obesity'
+    
+    BMI_CHOICES = [
+        (UNDERWEIGHT, 'Underweight'),
+        (NORMAL_WEIGHT, 'Normal weight'),
+        (OVERWEIGHT, 'Overweight'),
+        (OBESITY, 'Obesity')
+    ]
+    
     objects = UserManager()
+    
     USERNAME_FIELD = 'email'
+    
+    @property
+    def bmi(self):
+        if self.height and self.weight:
+            height_in_meters = self.height / 100
+            return self.weight / (height_in_meters ** 2)
+        return None
+    
+    @property
+    def bmi_interpretation(self):
+        bmi_value = self.bmi
+        if bmi_value is None:
+            return None
+        if bmi_value < 18.5:
+            return self.UNDERWEIGHT
+        elif 18.5 <= bmi_value < 24.9:
+            return self.NORMAL_WEIGHT
+        elif 25 <= bmi_value < 29.9:
+            return self.OVERWEIGHT
+        else:
+            return self.OBESITY
 
 
 class Recipe(models.Model):
