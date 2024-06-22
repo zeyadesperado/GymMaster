@@ -66,6 +66,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         (OBESITY, 'Obesity')
     ]
     
+    bmi_interpretation = models.CharField(
+        max_length=15,
+        choices=BMI_CHOICES,
+        blank=True,
+        null=True
+    )
+    
     objects = UserManager()
     
     USERNAME_FIELD = 'email'
@@ -77,20 +84,22 @@ class User(AbstractBaseUser, PermissionsMixin):
             return self.weight / (height_in_meters ** 2)
         return None
     
-    @property
-    def bmi_interpretation(self):
+    def save(self, *args, **kwargs):
+        self.set_bmi_interpretation()
+        super().save(*args, **kwargs)
+    
+    def set_bmi_interpretation(self):
         bmi_value = self.bmi
         if bmi_value is None:
-            return None
-        if bmi_value < 18.5:
-            return self.UNDERWEIGHT
+            self.bmi_interpretation = None
+        elif bmi_value < 18.5:
+            self.bmi_interpretation = self.UNDERWEIGHT
         elif 18.5 <= bmi_value < 24.9:
-            return self.NORMAL_WEIGHT
+            self.bmi_interpretation = self.NORMAL_WEIGHT
         elif 25 <= bmi_value < 29.9:
-            return self.OVERWEIGHT
+            self.bmi_interpretation = self.OVERWEIGHT
         else:
-            return self.OBESITY
-
+            self.bmi_interpretation = self.OBESITY
 
 class Recipe(models.Model):
     """Recipe object."""
