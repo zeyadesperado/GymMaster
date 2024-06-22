@@ -11,7 +11,12 @@ from rest_framework.permissions import IsAuthenticated
 from core.models import (
     Recipe,
     Tag,
-    Ingredient
+    Ingredient,
+    Coach,
+    Supplement,
+    Payment
+   
+      
      )
 from recipe import serializers
 
@@ -63,3 +68,36 @@ class IngredientViewSet(BaseRecipeAttrViewSet):
     """Manage Ingredients in the database"""
     serializer_class = serializers.IngredientSerializer
     queryset = Ingredient.objects.all()
+
+
+class CoachViewSet(viewsets.ModelViewSet):
+    """ViewSet for managing Coach objects."""
+    queryset = Coach.objects.all()
+    serializer_class = serializers.CoachSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    
+
+    
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    """ViewSet for managing Payment objects."""
+    queryset = Payment.objects.all()
+    serializer_class = serializers.PaymentSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+   
+
+    
+
+class SupplementViewSet(viewsets.ModelViewSet):
+    """ViewSet for managing Supplement objects."""
+    queryset = Supplement.objects.all()
+    serializer_class = serializers.SupplementSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    
+

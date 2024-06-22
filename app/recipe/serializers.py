@@ -3,7 +3,7 @@ serializers for recipe APIs
 """
 from rest_framework import serializers
 
-from core.models import Recipe, Tag, Ingredient
+from core.models import Recipe, Tag, Ingredient,Coach,Payment,Supplement
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -90,3 +90,26 @@ class RecipeDetailSerializer(RecipeSerializer):
 
     class Meta(RecipeSerializer.Meta):
         fields = RecipeSerializer.Meta.fields + ['description']
+
+class CoachSerializer(serializers.ModelSerializer):
+    """Serializer for Coach model."""
+
+    class Meta:
+        model = Coach
+        fields = '__all__'
+
+class PaymentSerializer(serializers.ModelSerializer):
+    """Serializer for Payment model."""
+
+    class Meta:
+        model = Payment
+        fields = '__all__'
+
+class SupplementSerializer(serializers.ModelSerializer):
+    """Serializer for Supplement model."""
+
+    class Meta:
+        model = Supplement
+        fields = '__all__'
+
+
