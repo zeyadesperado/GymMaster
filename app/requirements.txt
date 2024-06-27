@@ -6,4 +6,3 @@ drf-spectacular>=0.15.1,<0.16
 pillow==10.2.0
 gunicorn==21.2.0
 python-dotenv==1.0.0
-
