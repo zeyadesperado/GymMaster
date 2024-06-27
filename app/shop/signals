@@ -1,0 +1,25 @@
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+from .models import OrderItem, Order
+
+@receiver(post_save, sender=OrderItem)
+def update_order_on_save(sender, instance, created, **kwargs):
+
+    order = instance.order
+    update_order_totals(order)
+
+@receiver(post_delete, sender=OrderItem)
+def update_order_on_delete(sender, instance, **kwargs):
+    
+    order = instance.order
+    update_order_totals(order)
+
+def update_order_totals(order):
+  
+    order_items = order.order_items.all()
+    total_price = sum(item.product.price * item.quantity for item in order_items)
+    total_quantity = sum(item.quantity for item in order_items)
+
+    order.total_price = total_price
+    order.total_quantity = total_quantity  # Assuming you add a total_quantity field to Order
+    order.save()
