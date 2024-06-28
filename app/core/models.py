@@ -35,6 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     height = models.FloatField(null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
     picture = models.ImageField(upload_to='pictures/', null=True, blank=True)
+
     # Additional body composition attributes
     body_fat_percentage = models.FloatField(null=True, blank=True)
     muscle_mass = models.FloatField(null=True, blank=True)
@@ -104,6 +105,7 @@ class Recipe(models.Model):
     link = models.CharField(max_length=255, blank=True)
     tags = models.ManyToManyField('Tag')
     ingredients = models.ManyToManyField('Ingredient')
+    picture = models.ImageField(upload_to='recipes/', null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -130,6 +132,7 @@ class Supplement(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     calories = models.IntegerField()
+    picture = models.ImageField(upload_to='supplement/', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -151,6 +154,8 @@ class Coach(models.Model):
     name = models.CharField(max_length=255)
     bio = models.TextField()
     price_per_month = models.DecimalField(max_digits=10, decimal_places=2)
+    picture = models.ImageField(upload_to='coach/', null=True, blank=True)
+    certificate = models.ImageField(upload_to='coach/certificate/', null=True, blank=True)
 
     def __str__(self):
         return self.name
