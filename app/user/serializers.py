@@ -33,6 +33,10 @@ class UserSerializer(serializers.ModelSerializer):
         if password:
             user.set_password(password)
             user.save()
+        if 'picture' in validated_data:
+            if instance.picture:
+                raise serializers.ValidationError({"picture": "Profile picture can only be set once and cannot be changed."})
+            instance.picture = validated_data.get('picture', instance.picture)
 
         return user
 
