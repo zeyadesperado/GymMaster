@@ -76,6 +76,8 @@ class CoachViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CoachSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    parser_classes= [MultiPartParser,FormParser]
+
 
 
 
@@ -98,6 +100,8 @@ class SupplementViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.SupplementSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    parser_classes= [MultiPartParser,FormParser]
+
 
 
 
