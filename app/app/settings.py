@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'user',
     'recipe',
+    'corsheaders',
 
 ]
 
@@ -66,6 +67,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'app.middleware.ReferrerPolicyMiddleware',  # Ensure this is correctly placed
 ]
 
@@ -153,7 +156,7 @@ CORS_ALLOWED_ORIGINS = [
 
 ALLOWED_HOSTS = ['gymmaster-production.up.railway.app', '*']
 
-
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -168,12 +171,12 @@ CORS_ALLOW_HEADERS = [
     "accept",
     "authorization",
     "content-type",
-    'api_key',          
+    'api_key',
     'Authorization',
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
-    "ngrok-skip-browser-warning"
+    "ngrok-skip-browser-warning",
     'accept-encoding',
     'dnt',
     'origin',
