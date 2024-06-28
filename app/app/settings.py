@@ -29,8 +29,6 @@ SECRET_KEY = 'django-insecure-i9**s!&&wy(5%nf)=ld*d*q9@+y&g)tvl&+r91p8&!xb(jnxyc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -68,8 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # Add your custom middleware here
-    'middleware.ReferrerPolicyMiddleware',  # Replace 'your_app_name' with the actual app name
+    'app.middleware.ReferrerPolicyMiddleware',  # Ensure this is correctly placed
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -149,8 +146,13 @@ CORS_ALLOW_ORIGINS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://*-production.up.railway.app',
+    'https://gymmaster-production.up.railway.app',
+    'http://localhost:8000',
+    'http://localhost:8083',
 ]
+
+ALLOWED_HOSTS = ['gymmaster-production.up.railway.app', '*']
+
 
 
 CORS_ALLOW_METHODS = [

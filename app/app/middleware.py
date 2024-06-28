@@ -1,8 +1,6 @@
-class ReferrerPolicyMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
+from django.utils.deprecation import MiddlewareMixin
 
-    def __call__(self, request):
-        response = self.get_response(request)
+class ReferrerPolicyMiddleware(MiddlewareMixin):
+    def process_response(self, request, response):
         response['Referrer-Policy'] = 'strict-origin-when-cross-origin'
         return response
