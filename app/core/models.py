@@ -28,58 +28,58 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    
+
     # Basic attributes
     age = models.PositiveIntegerField(blank=True, null=True)
     weight = models.FloatField(null=True, blank=True)
     height = models.FloatField(null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
-    
+    picture = models.ImageField(upload_to='pictures/', null=True, blank=True)
     # Additional body composition attributes
     body_fat_percentage = models.FloatField(null=True, blank=True)
     muscle_mass = models.FloatField(null=True, blank=True)
     bone_density = models.FloatField(null=True, blank=True)
     waist_circumference = models.FloatField(null=True, blank=True)
     hip_circumference = models.FloatField(null=True, blank=True)
-    
+
     # BMI interpretation choices
     UNDERWEIGHT = 'Underweight'
     NORMAL_WEIGHT = 'Normal weight'
     OVERWEIGHT = 'Overweight'
     OBESITY = 'Obesity'
-    
+
     BMI_CHOICES = [
         (UNDERWEIGHT, 'Underweight'),
         (NORMAL_WEIGHT, 'Normal weight'),
         (OVERWEIGHT, 'Overweight'),
         (OBESITY, 'Obesity')
     ]
-    
+
     bmi_interpretation = models.CharField(
         max_length=15,
         choices=BMI_CHOICES,
         blank=True,
         null=True
     )
-    
+
     objects = UserManager()
-    
+
     USERNAME_FIELD = 'email'
 
     def __str__(self):
         return self.email
-    
+
     @property
     def bmi(self):
         if self.height and self.weight:
             height_in_meters = self.height / 100
             return self.weight / (height_in_meters ** 2)
         return None
-    
+
     def save(self, *args, **kwargs):
         self.set_bmi_interpretation()
         super().save(*args, **kwargs)
-    
+
     def set_bmi_interpretation(self):
         bmi_value = self.bmi
         if bmi_value is None:
@@ -134,7 +134,7 @@ class Supplement(models.Model):
     def __str__(self):
         return self.name
 
-   
+
 
 
 class Payment(models.Model):

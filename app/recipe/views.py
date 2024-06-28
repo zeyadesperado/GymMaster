@@ -15,16 +15,16 @@ from core.models import (
     Coach,
     Supplement,
     Payment
-   
-      
      )
 from recipe import serializers
+from rest_framework.parsers import MultiPartParser,FormParser
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
     """View for managing recipe APIs."""
     serializer_class = serializers.RecipeDetailSerializer
     queryset = Recipe.objects.all()
+    parser_classes= [MultiPartParser,FormParser]
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -77,9 +77,9 @@ class CoachViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    
 
-    
+
+
 
 class PaymentViewSet(viewsets.ModelViewSet):
     """ViewSet for managing Payment objects."""
@@ -88,9 +88,9 @@ class PaymentViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-   
 
-    
+
+
 
 class SupplementViewSet(viewsets.ModelViewSet):
     """ViewSet for managing Supplement objects."""
@@ -99,5 +99,5 @@ class SupplementViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    
+
 
