@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.utils.timezone import now
+from datetime import timedelta
 
 class UserManager(BaseUserManager):
     """Manager for users."""
@@ -37,22 +39,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     ]
 
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True, blank=True)
-
-    # Basic attributes
     age = models.PositiveIntegerField(blank=True, null=True)
     weight = models.FloatField(null=True, blank=True)
     height = models.FloatField(null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
     picture = models.ImageField(upload_to='pictures/', null=True, blank=True)
-
-    # Additional body composition attributes
     body_fat_percentage = models.FloatField(null=True, blank=True)
     muscle_mass = models.FloatField(null=True, blank=True)
     bone_density = models.FloatField(null=True, blank=True)
     waist_circumference = models.FloatField(null=True, blank=True)
     hip_circumference = models.FloatField(null=True, blank=True)
 
-    # BMI interpretation choices
     UNDERWEIGHT = 'Underweight'
     NORMAL_WEIGHT = 'Normal weight'
     OVERWEIGHT = 'Overweight'
@@ -71,7 +68,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         null=True
     )
-    caloric_needs = models.FloatField(null=True, blank=True,)
+    caloric_needs = models.FloatField(null=True, blank=True)
+    payment_start_date = models.DateTimeField(null=True, blank=True)
+    payment_end_date = models.DateTimeField(null=True, blank=True)
 
     objects = UserManager()
 
@@ -108,15 +107,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     def daily_caloric_needs(self):
         if self.weight and self.height and self.age and self.gender:
             if self.gender == self.MALE:
-                # Mifflin-St Jeor Equation for men
                 bmr = 10 * self.weight + 6.25 * self.height - 5 * self.age + 5
             else:
-                # Mifflin-St Jeor Equation for women
                 bmr = 10 * self.weight + 6.25 * self.height - 5 * self.age - 161
             
-            # Assuming a sedentary activity level (can be adjusted)
             self.caloric_needs = bmr * 1.2 
-                
 
 class Recipe(models.Model):
     """Recipe object."""
@@ -161,17 +156,21 @@ class Supplement(models.Model):
     def __str__(self):
         return self.name
 
-
-
-
 class Payment(models.Model):
     """Payment object."""
-
-    duration = models.IntegerField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payments')
+    duration = models.IntegerField(help_text="Duration in months")
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True,)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.user.payment_start_date = self.created_at
+        self.user.payment_end_date = self.created_at + timedelta(days=30 * self.duration)
+        self.user.save()
 
     def __str__(self):
-        return f'{self.duration} - month'
+        return f'{self.duration} month(s) - {self.price}'
 
 class Coach(models.Model):
     """Coach object."""
@@ -183,5 +182,3 @@ class Coach(models.Model):
 
     def __str__(self):
         return self.name
-
-
