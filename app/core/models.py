@@ -71,7 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         null=True
     )
-    caloric_needs = models.FloatField(null=True, blank=True, default="1600")
+    caloric_needs = models.FloatField(null=True, blank=True,)
 
     objects = UserManager()
 
