@@ -46,12 +46,12 @@ class RecipeAdmin(admin.ModelAdmin):
     """Define the admin pages for recipes."""
     list_display = ['id', 'title', 'user', 'time_minutes', 'calories', 'price']
     list_filter = ['user', 'tags']
-    search_fields = ['title', 'user__email']
+    search_fields = ['title']
 
 class TagAdmin(admin.ModelAdmin):
     """Define the admin pages for tags."""
     list_display = ['id', 'name', 'user']
-    search_fields = ['name', 'user__email']
+    search_fields = ['name']
 
 class IngredientAdmin(admin.ModelAdmin):
     """Define the admin pages for ingredients."""
@@ -67,7 +67,7 @@ class PaymentAdmin(admin.ModelAdmin):
     """Define the admin pages for payments."""
     list_display = ['id', 'user', 'duration', 'price', 'created_at']
     list_filter = ['user']
-    search_fields = ['user__email', 'user__id']
+    search_fields = ['user__id']
 
 class CoachAdmin(admin.ModelAdmin):
     """Define the admin pages for coaches."""
