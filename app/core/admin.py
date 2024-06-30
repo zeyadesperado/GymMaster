@@ -11,7 +11,7 @@ from core import models
 class UserAdmin(BaseUserAdmin):
     """Define the admin pages for users."""
     ordering = ['id']
-    list_display = ['email', 'name']
+    list_display = ['id','email', 'name']
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (
@@ -41,6 +41,27 @@ class UserAdmin(BaseUserAdmin):
             )
         }],
     )
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in models.User._meta.fields]
+
+class RecipeAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in models.Recipe._meta.fields]
+
+class TagAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in models.Tag._meta.fields]
+
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in models.Ingredient._meta.fields]
+
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in models.Payment._meta.fields]
+
+class CoachAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in models.Coach._meta.fields]
+
+class SupplementAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in models.Supplement._meta.fields]
 
 
 admin.site.register(models.User, UserAdmin)
