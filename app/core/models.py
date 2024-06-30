@@ -28,6 +28,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    MALE = 'M'
+    FEMALE = 'F'
+
+    GENDER_CHOICES = [
+        (MALE, 'Male'),
+        (FEMALE, 'Female')
+    ]
+
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True, blank=True)
 
     # Basic attributes
     age = models.PositiveIntegerField(blank=True, null=True)
@@ -62,6 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         null=True
     )
+    caloric_needs = models.FloatField(null=True, blank=True, default="1600")
 
     objects = UserManager()
 
@@ -79,6 +89,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         self.set_bmi_interpretation()
+        self.daily_caloric_needs()
         super().save(*args, **kwargs)
 
     def set_bmi_interpretation(self):
@@ -93,6 +104,19 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.bmi_interpretation = self.OVERWEIGHT
         else:
             self.bmi_interpretation = self.OBESITY
+
+    def daily_caloric_needs(self):
+        if self.weight and self.height and self.age and self.gender:
+            if self.gender == self.MALE:
+                # Mifflin-St Jeor Equation for men
+                bmr = 10 * self.weight + 6.25 * self.height - 5 * self.age + 5
+            else:
+                # Mifflin-St Jeor Equation for women
+                bmr = 10 * self.weight + 6.25 * self.height - 5 * self.age - 161
+            
+            # Assuming a sedentary activity level (can be adjusted)
+            self.caloric_needs = bmr * 1.2 
+                
 
 class Recipe(models.Model):
     """Recipe object."""
