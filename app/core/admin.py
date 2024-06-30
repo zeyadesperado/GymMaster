@@ -67,7 +67,7 @@ class PaymentAdmin(admin.ModelAdmin):
     """Define the admin pages for payments."""
     list_display = ['id', 'user', 'duration', 'price', 'created_at']
     list_filter = ['user']
-    search_fields = ['user']
+    search_fields = ['id']
 
 class CoachAdmin(admin.ModelAdmin):
     """Define the admin pages for coaches."""
