@@ -33,6 +33,7 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,15 +50,12 @@ INSTALLED_APPS = [
 
 ]
 
-# MIDDLEWARE = [
-#     'django.middleware.security.SecurityMiddleware',
-#     'django.contrib.sessions.middleware.SessionMiddleware',
-#     'django.middleware.common.CommonMiddleware',
-#     'django.middleware.csrf.CsrfViewMiddleware',
-#     'django.contrib.auth.middleware.AuthenticationMiddleware',
-#     'django.contrib.messages.middleware.MessageMiddleware',
-#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-# ]
+JAZZMIN_SETTINGS = {
+    "site_title": "My Admin",
+    "site_header": "My Administration",
+    "welcome_sign": "Welcome to the Admin Area",
+    # Add more customization options as needed
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
