@@ -76,9 +76,9 @@ class CoachAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.User, UserAdmin)
-admin.site.register(models.Recipe)
-admin.site.register(models.Tag)
-admin.site.register(models.Ingredient)
-admin.site.register(models.Payment)
-admin.site.register(models.Coach)
-admin.site.register(models.Supplement)
+admin.site.register(models.Recipe,RecipeAdmin)
+admin.site.register(models.Tag,TagAdmin)
+admin.site.register(models.Ingredient,IngredientAdmin)
+admin.site.register(models.Payment,PaymentAdmin)
+admin.site.register(models.Coach,CoachAdmin)
+admin.site.register(models.Supplement,SupplementAdmin)
