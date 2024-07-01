@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.utils.timezone import now
 from datetime import timedelta
-
 
 class UserManager(BaseUserManager):
     """Manager for users."""
@@ -23,7 +23,6 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
-
 
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the system."""
@@ -69,28 +68,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         null=True
     )
-
-    SEDENTARY = 'Sedentary'
-    LIGHTLY_ACTIVE = 'Lightly active'
-    MODERATELY_ACTIVE = 'Moderately active'
-    VERY_ACTIVE = 'Very active'
-    SUPER_ACTIVE = 'Super active'
-
-    ACTIVITY_LEVEL_CHOICES = [
-        (SEDENTARY, 'Sedentary (little or no exercise)'),
-        (LIGHTLY_ACTIVE, 'Lightly active (light exercise/sports 1-3 days/week)'),
-        (MODERATELY_ACTIVE, 'Moderately active (moderate exercise/sports 3-5 days/week)'),
-        (VERY_ACTIVE, 'Very active (hard exercise/sports 6-7 days a week)'),
-        (SUPER_ACTIVE, 'Super active (very hard exercise/sports & a physical job)')
-    ]
-
-    activity_level = models.CharField(
-        max_length=50,
-        choices=ACTIVITY_LEVEL_CHOICES,
-        blank=True,
-        null=True
-    )
-
     caloric_needs = models.FloatField(null=True, blank=True)
     payment_start_date = models.DateTimeField(null=True, blank=True)
     payment_end_date = models.DateTimeField(null=True, blank=True)
@@ -128,22 +105,13 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.bmi_interpretation = self.OBESITY
 
     def daily_caloric_needs(self):
-        if self.weight and self.height and self.age and self.gender and self.activity_level:
+        if self.weight and self.height and self.age and self.gender:
             if self.gender == self.MALE:
                 bmr = 10 * self.weight + 6.25 * self.height - 5 * self.age + 5
             else:
                 bmr = 10 * self.weight + 6.25 * self.height - 5 * self.age - 161
-
-            activity_multipliers = {
-                self.SEDENTARY: 1.2,
-                self.LIGHTLY_ACTIVE: 1.375,
-                self.MODERATELY_ACTIVE: 1.55,
-                self.VERY_ACTIVE: 1.725,
-                self.SUPER_ACTIVE: 1.9
-            }
-
-            self.caloric_needs = bmr * activity_multipliers[self.activity_level]
-
+            
+            self.caloric_needs = bmr * 1.2 
 
 class Recipe(models.Model):
     """Recipe object."""
@@ -161,7 +129,6 @@ class Recipe(models.Model):
     def __str__(self):
         return self.title
 
-
 class Tag(models.Model):
     """Tag for filtering recipes."""
     name = models.CharField(max_length=255)
@@ -170,7 +137,6 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-
 class Ingredient(models.Model):
     """Ingredients for recipe."""
     name = models.CharField(max_length=255)
@@ -178,7 +144,6 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Supplement(models.Model):
     """Supplement object."""
@@ -190,7 +155,6 @@ class Supplement(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Payment(models.Model):
     """Payment object."""
@@ -207,7 +171,6 @@ class Payment(models.Model):
 
     def __str__(self):
         return f'{self.duration} month(s) - {self.price}'
-
 
 class Coach(models.Model):
     """Coach object."""
