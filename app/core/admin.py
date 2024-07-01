@@ -65,7 +65,7 @@ class SupplementAdmin(admin.ModelAdmin):
 
 class PaymentAdmin(admin.ModelAdmin):
     """Define the admin pages for payments."""
-    list_display = ['id', 'user', 'duration', 'price', 'created_at']
+    list_display = ['id', 'user', 'duration', 'price', 'created_at','user__id']
     list_filter = ['user']
     search_fields = ['user__id']
 
