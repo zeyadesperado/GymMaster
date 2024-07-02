@@ -33,7 +33,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('bmi_interpretation', 'activity_level', 'caloric_needs')
         }),
         (_('Payment Info'), {'fields': ('payment_start_date', 'payment_end_date')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
         (_('Important Dates'), {'fields': ('last_login', )}),
     )
     readonly_fields = ['last_login', 'bmi_interpretation', 'caloric_needs']
@@ -45,10 +45,13 @@ class UserAdmin(BaseUserAdmin):
                 'email', 'password1', 'password2', 'name', 'gender', 'age', 'phone', 'picture',
                 'weight', 'height', 'body_fat_percentage', 'muscle_mass', 'bone_density',
                 'waist_circumference', 'hip_circumference', 'activity_level', 'is_active',
-                'is_staff', 'is_superuser', 'groups', 'user_permissions'
+                'is_staff', 'is_superuser'
             ),
         }),
     )
+    def has_add_permission(self, request):
+        """Only allow users with is_manager = True to add users."""
+        return request.user.is_manager
     
     
 class RecipeAdmin(admin.ModelAdmin):
