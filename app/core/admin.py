@@ -7,6 +7,14 @@ from django.utils.translation import gettext_lazy as _
 
 from core import models
 
+from shop.models import Order
+
+class OrderInline(admin.TabularInline):
+    """Inline admin class for Orders."""
+    model = Order
+    extra = 0
+    readonly_fields = ['total_quantity', 'total_price']
+    verbose_name_plural = 'Orders'
 
 class UserAdmin(BaseUserAdmin):
     """Define the admin pages for users."""
