@@ -33,7 +33,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('bmi_interpretation', 'activity_level', 'caloric_needs')
         }),
         (_('Payment Info'), {'fields': ('payment_start_date', 'payment_end_date')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser','is_manager')}),
         (_('Important Dates'), {'fields': ('last_login', )}),
     )
     readonly_fields = ['last_login', 'bmi_interpretation', 'caloric_needs']
@@ -45,7 +45,7 @@ class UserAdmin(BaseUserAdmin):
                 'email', 'password1', 'password2', 'name', 'gender', 'age', 'phone', 'picture',
                 'weight', 'height', 'body_fat_percentage', 'muscle_mass', 'bone_density',
                 'waist_circumference', 'hip_circumference', 'activity_level', 'is_active',
-                'is_staff', 'is_superuser'
+                'is_staff', 'is_superuser','is_manager'
             ),
         }),
     )
