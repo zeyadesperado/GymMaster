@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'user',
     'recipe',
-    'shop',
+    # 'shop',
     'corsheaders',
 
 ]
