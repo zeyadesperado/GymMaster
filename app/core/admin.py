@@ -79,7 +79,7 @@ class PaymentAdmin(admin.ModelAdmin):
     """Define the admin pages for payments."""
     list_display = ['id', 'user', 'duration', 'price', 'created_at' ,'user_id']
     list_filter = ['user']
-    search_fields = ['user__id']
+    search_fields = ['user__email']
 
 class CoachAdmin(admin.ModelAdmin):
     """Define the admin pages for coaches."""
