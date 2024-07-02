@@ -34,9 +34,9 @@ class UserAdmin(BaseUserAdmin):
         }),
         (_('Payment Info'), {'fields': ('payment_start_date', 'payment_end_date')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        (_('Important Dates'), {'fields': ('last_login', 'date_joined')}),
+        (_('Important Dates'), {'fields': ('last_login', )}),
     )
-    readonly_fields = ['last_login', 'date_joined', 'bmi_interpretation', 'caloric_needs']
+    readonly_fields = ['last_login', 'bmi_interpretation', 'caloric_needs']
 
     add_fieldsets = (
         (None, {
